@@ -1,0 +1,55 @@
+@use '@/assets/styles/utils/variables.scss' as *;
+
+html {
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul,
+ol,
+li,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  display: block;
+  width: 100%;
+}
+
+button {
+  cursor: pointer;
+  padding: 0;
+  line-height: 0;
+  border: none;
+  background-color: transparent;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+svg {
+  fill: transparent;
+}
+
+body {
+  font-family: $primary-font;
+}
+
+.container {
+  max-width: $container-width;
+  margin: 0 auto;
+  padding: 0 15px;
+}
