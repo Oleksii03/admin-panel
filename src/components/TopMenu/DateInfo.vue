@@ -7,10 +7,7 @@
     <div class="date-info__date-box">
       <p class="date-info__date">17 September 2023</p>
       <p class="date-info__time">
-        <img
-          class="date-info__time-icon"
-          src="/clock.svg"
-          alt="clock" />
+        <el-icon class="date-info__time-icon"><Clock /></el-icon>
 
         <span class="date-info__time-text">12:00</span>
       </p>
@@ -19,6 +16,8 @@
 </template>
 
 <style scoped lang="scss">
+  @use '@/assets/styles/utils/variables.scss' as *;
+
   .date-info {
     font-size: 14px;
     margin-left: auto;
@@ -45,6 +44,12 @@
       &-icon {
         width: 18px;
         height: 18px;
+        color: $green;
+
+        & > svg {
+          width: 100%;
+          height: 100%;
+        }
       }
     }
   }

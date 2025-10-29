@@ -2,7 +2,7 @@
 
 <template>
   <div class="logo">
-    <div class="logo__icon"></div>
+    <el-icon class="logo__icon"><UserFilled /></el-icon>
     <div class="logo__text">inventory</div>
   </div>
 </template>
@@ -17,10 +17,12 @@
     column-gap: 15px;
 
     &__icon {
-      width: 40px;
-      height: 40px;
+      position: relative;
+      width: 30px;
+      height: 35px;
       background-color: $green;
-      border-radius: 50%;
+      border-radius: 5px 5px 50% 50%;
+      color: $light;
     }
 
     &__text {
