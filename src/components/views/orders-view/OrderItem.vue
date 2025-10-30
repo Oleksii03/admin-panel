@@ -1,0 +1,161 @@
+<script setup lang="ts">
+  import { computed } from 'vue';
+  import type { Order } from '@/types';
+  import { useDateFormatter } from '@/composables/useDateFormatter';
+  import { useNumberFormatter } from '@/composables/useNumberFormatter';
+
+  const props = defineProps<{
+    order: Order;
+  }>();
+
+  const { formatDateFull, formatDateNumbers } = useDateFormatter();
+  const { formatWithSpaces } = useNumberFormatter();
+
+  const fullDate = computed(() => formatDateFull(props.order.date));
+  const shortDate = computed(() => formatDateNumbers(props.order.date));
+
+  const orderTotalPrice = computed(() => {
+    let totalUAH = 0;
+    let totalUSD = 0;
+
+    props.order.products?.forEach(product => {
+      const priceUAH = product.price?.find(p => p.symbol === 'UAH');
+      const priceUSD = product.price?.find(p => p.symbol === 'USD');
+
+      totalUAH += priceUAH?.value ?? 0;
+      totalUSD += priceUSD?.value ?? 0;
+    });
+
+    return {
+      totalUAH: formatWithSpaces(totalUAH),
+      totalUSD: formatWithSpaces(totalUSD),
+    };
+  });
+</script>
+
+<template>
+  <li class="order-item">
+    <p class="order-item__title">{{ props.order.title }}</p>
+
+    <div class="order-item__quantity-box quantity-box">
+      <span class="quantity-box__icon">
+        <el-icon><Operation /></el-icon>
+      </span>
+
+      <div class="quantity-box__quantity">
+        <p class="quantity-box__number">{{ props.order.products?.length ?? 0 }}</p>
+        <p class="quantity-box__title">Продукта</p>
+      </div>
+    </div>
+
+    <div class="order-item__date">
+      <p class="order-item__date-short">{{ shortDate }}</p>
+      <p class="order-item__date-full">{{ fullDate }}</p>
+    </div>
+
+    <div class="order-item__price">
+      <p class="order-item__price-usd">{{ orderTotalPrice.totalUSD }} $</p>
+      <p class="order-item__price-uah">
+        {{ orderTotalPrice.totalUAH }}
+        <span>UAH</span>
+      </p>
+    </div>
+
+    <button class="order-item__delete-btn">
+      <el-icon><DeleteFilled /></el-icon>
+    </button>
+  </li>
+</template>
+
+<style lang="scss" scoped>
+  @use '@/assets/styles/utils/variables.scss' as *;
+
+  .order-item {
+    display: grid;
+    grid-template-columns: minmax(100px, 50%) auto auto auto 30px;
+    align-items: center;
+    padding: 10px 15px;
+    border: 1px solid $gray;
+    border-radius: 5px;
+    column-gap: 15px;
+    white-space: nowrap;
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+
+    &__title {
+      font-size: 18px;
+      font-weight: 500;
+      color: $dark-gray;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    &__date {
+      text-align: center;
+
+      &-short {
+        font-size: 12px;
+        color: $gray;
+      }
+
+      &-full {
+        font-size: 14px;
+        font-weight: 500;
+        color: $dark-gray;
+      }
+    }
+
+    &__price {
+      &-usd {
+        font-size: 12px;
+        color: $gray;
+      }
+
+      &-uah {
+        font-size: 14px;
+        font-weight: 600;
+        color: $dark-gray;
+
+        & > span {
+          font-size: 10px;
+        }
+      }
+    }
+
+    &__delete-btn {
+      & > .el-icon {
+        font-size: 14px;
+        color: $gray;
+      }
+    }
+  }
+
+  .quantity-box {
+    display: flex;
+    align-items: center;
+    column-gap: 15px;
+
+    &__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid $gray;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+    }
+
+    &__title {
+      font-size: 14px;
+      color: $gray;
+    }
+
+    &__number {
+      font-size: 14px;
+      font-weight: 600;
+      color: $dark-gray;
+    }
+  }
+</style>

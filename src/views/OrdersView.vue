@@ -2,9 +2,10 @@
   import { onMounted } from 'vue';
   import { useRootStore } from '@/stores/root';
   import { storeToRefs } from 'pinia';
+  import OrderList from '@/components/views/orders-view/OrderList.vue';
 
   const rootStore = useRootStore();
-  const { orders } = storeToRefs(rootStore);
+  const { orders, isLoading } = storeToRefs(rootStore);
 
   onMounted(async () => await rootStore.getOrders());
 </script>
@@ -20,6 +21,8 @@
           <span>{{ orders.length }}</span>
         </h1>
       </div>
+
+      <OrderList :orders="orders" />
     </div>
   </section>
 </template>
