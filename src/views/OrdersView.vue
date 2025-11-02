@@ -5,6 +5,7 @@
   import type { Order, Product } from '@/types';
   import OrderList from '@/components/views/orders-view/OrderList.vue';
   import ProductsList from '@/components/views/orders-view/ProductsList.vue';
+  import OrderListSkeleton from '@/components/views/orders-view/OrderListSkeleton.vue';
 
   const rootStore = useRootStore();
   const { orders, isLoading } = storeToRefs(rootStore);
@@ -27,6 +28,10 @@
     openProductList.value = false;
   }
 
+  function deleteProduct(id: number) {
+    activeProductsList.value = activeProductsList.value.filter(product => product.id !== id);
+  }
+
   onMounted(async () => await rootStore.getOrders());
 </script>
 
@@ -42,7 +47,11 @@
         </h1>
       </div>
 
-      <div :class="['orders__list-wrapper', { 'orders__list-wrapper_open': openProductList }]">
+      <OrderListSkeleton v-if="isLoading" />
+
+      <div
+        v-else
+        :class="['orders__list-wrapper', { 'orders__list-wrapper_open': openProductList }]">
         <OrderList
           :orders="orders"
           @get-active-order="openActiveOrder" />
@@ -50,6 +59,7 @@
         <ProductsList
           v-if="openProductList"
           @close-active-order="closeActiveOrder"
+          @delete-product="deleteProduct"
           :products="activeProductsList"
           :title="activeOrderTitle" />
       </div>

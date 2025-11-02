@@ -29,6 +29,7 @@
 
     <ul class="products__list">
       <ProductsItem
+        @delete-product="id => $emit('delete-product', id)"
         v-for="product in products"
         :key="product.id"
         :product="product" />

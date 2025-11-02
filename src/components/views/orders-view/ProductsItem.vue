@@ -4,6 +4,10 @@
   defineProps<{
     product: Product;
   }>();
+
+  defineEmits<{
+    'delete-product': [id: number];
+  }>();
 </script>
 
 <template>
@@ -33,7 +37,7 @@
 
     <button
       class="products-item__delete-btn"
-      @click.stop="console.log('test')">
+      @click.stop="$emit('delete-product', product.id)">
       <el-icon><DeleteFilled /></el-icon>
     </button>
   </li>
@@ -72,6 +76,7 @@
         font-size: 14px;
         font-weight: 600;
         color: $dark-gray;
+        margin-bottom: 5px;
       }
 
       &-sn {
