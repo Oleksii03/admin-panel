@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, inject } from 'vue';
+  import { computed, inject, ref } from 'vue';
   import type { Order } from '@/types';
   import { useDateFormatter } from '@/composables/useDateFormatter';
   import { useNumberFormatter } from '@/composables/useNumberFormatter';
@@ -8,17 +8,28 @@
     order: Order;
   }>();
 
-  defineEmits<{
-    'get-products': [order: Order];
+  const emit = defineEmits<{
+    'get-active-order': [order: Order];
   }>();
 
   const openProductList = inject<boolean>('openProductList');
 
+  const activeItemId = ref(0);
+
   const { formatDateFull, formatDateNumbers } = useDateFormatter();
   const { formatWithSpaces } = useNumberFormatter();
 
+  function handleActiveItem(order: Order) {
+    activeItemId.value = order.id;
+    emit('get-active-order', order);
+  }
+
   const fullDate = computed(() => formatDateFull(props.order.date));
   const shortDate = computed(() => formatDateNumbers(props.order.date));
+
+  const isActiveOrder = computed(() => activeItemId.value === props.order.id);
+
+  console.log(isActiveOrder.value);
 
   const orderTotalPrice = computed(() => {
     let totalUAH = 0;
@@ -42,7 +53,7 @@
 <template>
   <li
     :class="['order-item', { 'order-item_open': openProductList }]"
-    @click="$emit('get-products', order)">
+    @click="handleActiveItem(order)">
     <p class="order-item__title">{{ order.title }}</p>
 
     <div class="order-item__quantity-box quantity-box">
@@ -69,7 +80,9 @@
       </p>
     </div>
 
+    <el-icon v-if="isActiveOrder"><ArrowRightBold /></el-icon>
     <button
+      v-else
       class="order-item__delete-btn"
       @click.stop="console.log('test')">
       <el-icon><DeleteFilled /></el-icon>

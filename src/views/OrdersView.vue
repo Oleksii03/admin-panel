@@ -15,7 +15,7 @@
 
   provide('openProductList', openProductList);
 
-  function showOpenProducts(order: Order) {
+  function handleActiveOrder(order: Order) {
     activeProductsList.value = order.products;
     activeOrderTitle.value = order.title;
     openProductList.value = true;
@@ -39,7 +39,7 @@
       <div :class="['orders__list-wrapper', { 'orders__list-wrapper_open': openProductList }]">
         <OrderList
           :orders="orders"
-          @get-products="showOpenProducts" />
+          @get-active-order="handleActiveOrder" />
 
         <ProductsList
           v-if="openProductList"

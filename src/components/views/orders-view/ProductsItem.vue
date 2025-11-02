@@ -51,6 +51,7 @@
 
     &.new {
       background-color: $light;
+      box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.39);
     }
 
     &__active {

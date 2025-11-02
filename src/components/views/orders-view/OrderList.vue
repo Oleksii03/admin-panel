@@ -10,7 +10,7 @@
 <template>
   <ul class="order-list">
     <OrderItem
-      @get-products="products => $emit('get-products', order)"
+      @get-active-order="activeOrder => $emit('get-active-order', activeOrder)"
       v-for="order in orders"
       :key="order.id"
       :order="order" />
