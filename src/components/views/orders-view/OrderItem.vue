@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed } from 'vue';
+  import { computed, inject } from 'vue';
   import type { Order } from '@/types';
   import { useDateFormatter } from '@/composables/useDateFormatter';
   import { useNumberFormatter } from '@/composables/useNumberFormatter';
@@ -7,6 +7,12 @@
   const props = defineProps<{
     order: Order;
   }>();
+
+  defineEmits<{
+    'get-products': [order: Order];
+  }>();
+
+  const openProductList = inject<boolean>('openProductList');
 
   const { formatDateFull, formatDateNumbers } = useDateFormatter();
   const { formatWithSpaces } = useNumberFormatter();
@@ -34,8 +40,10 @@
 </script>
 
 <template>
-  <li class="order-item">
-    <p class="order-item__title">{{ props.order.title }}</p>
+  <li
+    :class="['order-item', { 'order-item_open': openProductList }]"
+    @click="$emit('get-products', order)">
+    <p class="order-item__title">{{ order.title }}</p>
 
     <div class="order-item__quantity-box quantity-box">
       <span class="quantity-box__icon">
@@ -43,7 +51,7 @@
       </span>
 
       <div class="quantity-box__quantity">
-        <p class="quantity-box__number">{{ props.order.products?.length ?? 0 }}</p>
+        <p class="quantity-box__number">{{ order.products?.length ?? 0 }}</p>
         <p class="quantity-box__title">Продукта</p>
       </div>
     </div>
@@ -61,7 +69,9 @@
       </p>
     </div>
 
-    <button class="order-item__delete-btn">
+    <button
+      class="order-item__delete-btn"
+      @click.stop="console.log('test')">
       <el-icon><DeleteFilled /></el-icon>
     </button>
   </li>
@@ -72,13 +82,23 @@
 
   .order-item {
     display: grid;
-    grid-template-columns: minmax(100px, 50%) auto auto auto 30px;
     align-items: center;
+    grid-template-columns: minmax(100px, 50%) auto auto auto 30px;
     padding: 10px 15px;
     border: 1px solid $gray;
     border-radius: 5px;
     column-gap: 15px;
     white-space: nowrap;
+    cursor: pointer;
+    min-width: 380px;
+
+    &_open {
+      grid-template-columns: auto auto auto 30px;
+
+      & .order-item__title {
+        display: none;
+      }
+    }
 
     &:not(:last-child) {
       margin-bottom: 10px;
@@ -89,7 +109,6 @@
       font-weight: 500;
       color: $dark-gray;
       text-decoration: underline;
-      cursor: pointer;
     }
 
     &__date {
@@ -125,6 +144,8 @@
     }
 
     &__delete-btn {
+      width: 100%;
+      height: 100%;
       & > .el-icon {
         font-size: 14px;
         color: $gray;
