@@ -1,35 +1,25 @@
 <script setup lang="ts">
-  import { computed, inject, ref } from 'vue';
+  import { computed, inject } from 'vue';
   import type { Order } from '@/types';
   import { useDateFormatter } from '@/composables/useDateFormatter';
   import { useNumberFormatter } from '@/composables/useNumberFormatter';
 
   const props = defineProps<{
     order: Order;
+    isActiveOrder: boolean;
   }>();
 
-  const emit = defineEmits<{
+  defineEmits<{
     'get-active-order': [order: Order];
   }>();
 
   const openProductList = inject<boolean>('openProductList');
 
-  const activeItemId = ref(0);
-
   const { formatDateFull, formatDateNumbers } = useDateFormatter();
   const { formatWithSpaces } = useNumberFormatter();
 
-  function handleActiveItem(order: Order) {
-    activeItemId.value = order.id;
-    emit('get-active-order', order);
-  }
-
   const fullDate = computed(() => formatDateFull(props.order.date));
   const shortDate = computed(() => formatDateNumbers(props.order.date));
-
-  const isActiveOrder = computed(() => activeItemId.value === props.order.id);
-
-  console.log(isActiveOrder.value);
 
   const orderTotalPrice = computed(() => {
     let totalUAH = 0;
@@ -53,7 +43,7 @@
 <template>
   <li
     :class="['order-item', { 'order-item_open': openProductList }]"
-    @click="handleActiveItem(order)">
+    @click="$emit('get-active-order', order)">
     <p class="order-item__title">{{ order.title }}</p>
 
     <div class="order-item__quantity-box quantity-box">
@@ -80,10 +70,14 @@
       </p>
     </div>
 
-    <el-icon v-if="isActiveOrder"><ArrowRightBold /></el-icon>
+    <div
+      class="order-item__active-mark"
+      v-if="isActiveOrder">
+      <el-icon><ArrowRightBold /></el-icon>
+    </div>
+
     <button
-      v-else
-      class="order-item__delete-btn"
+      :class="['order-item__delete-btn', { 'order-item__delete-btn_hidden': openProductList }]"
       @click.stop="console.log('test')">
       <el-icon><DeleteFilled /></el-icon>
     </button>
@@ -94,6 +88,7 @@
   @use '@/assets/styles/utils/variables.scss' as *;
 
   .order-item {
+    position: relative;
     display: grid;
     align-items: center;
     grid-template-columns: minmax(100px, 50%) auto auto auto 30px;
@@ -156,12 +151,34 @@
       }
     }
 
+    &__active-mark {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      height: 100%;
+      width: 30px;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $gray;
+
+      & > .el-icon {
+        color: $light;
+      }
+    }
+
     &__delete-btn {
       width: 100%;
       height: 100%;
+
       & > .el-icon {
         font-size: 14px;
         color: $gray;
+      }
+
+      &_hidden {
+        display: none;
       }
     }
   }
