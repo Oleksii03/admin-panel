@@ -72,7 +72,7 @@
 
     <div
       class="order-item__active-mark"
-      v-if="isActiveOrder">
+      v-if="isActiveOrder && openProductList">
       <el-icon><ArrowRightBold /></el-icon>
     </div>
 

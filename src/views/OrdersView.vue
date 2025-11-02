@@ -10,15 +10,21 @@
   const { orders, isLoading } = storeToRefs(rootStore);
 
   const activeProductsList = ref<Product[]>([]);
-  const activeOrderTitle = ref<string>('');
+  const activeOrderTitle = ref('');
   const openProductList = ref(false);
 
   provide('openProductList', openProductList);
 
-  function handleActiveOrder(order: Order) {
+  function openActiveOrder(order: Order) {
     activeProductsList.value = order.products;
     activeOrderTitle.value = order.title;
     openProductList.value = true;
+  }
+
+  function closeActiveOrder() {
+    activeProductsList.value = [];
+    activeOrderTitle.value = '';
+    openProductList.value = false;
   }
 
   onMounted(async () => await rootStore.getOrders());
@@ -39,10 +45,11 @@
       <div :class="['orders__list-wrapper', { 'orders__list-wrapper_open': openProductList }]">
         <OrderList
           :orders="orders"
-          @get-active-order="handleActiveOrder" />
+          @get-active-order="openActiveOrder" />
 
         <ProductsList
           v-if="openProductList"
+          @close-active-order="closeActiveOrder"
           :products="activeProductsList"
           :title="activeOrderTitle" />
       </div>

@@ -10,6 +10,13 @@
 
 <template>
   <div class="products">
+    <button
+      @click="$emit('close-active-order')"
+      class="products__close-btn"
+      type="button">
+      <el-icon><Close /></el-icon>
+    </button>
+
     <div class="products__header">
       <h2 class="products__title">{{ title }}</h2>
 
@@ -33,8 +40,29 @@
   @use '@/assets/styles/utils/variables.scss' as *;
 
   .products {
+    position: relative;
     border: 1px solid $gray;
     border-radius: 4px;
+
+    &__close-btn {
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $light;
+      border-radius: 50%;
+      box-shadow: 5px 5px 13px -6px rgba(0, 0, 0, 0.77);
+      cursor: pointer;
+
+      & > .el-icon {
+        font-size: 18px;
+        color: $gray;
+      }
+    }
 
     &__title {
       margin-bottom: 15px;
@@ -52,15 +80,15 @@
       font-size: 12px;
       font-weight: 600;
       color: $green;
-    }
 
-    & .el-icon {
-      font-size: 14px;
-      color: $light;
-      background-color: $green;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
+      & > .el-icon {
+        font-size: 14px;
+        color: $light;
+        background-color: $green;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+      }
     }
   }
 </style>

@@ -13,7 +13,7 @@
 
   const activeItemId = ref<number | null>(0);
 
-  function handleActiveItem(order: Order) {
+  function handleActiveOrder(order: Order) {
     activeItemId.value = order.id;
     emit('get-active-order', order);
   }
@@ -22,7 +22,7 @@
 <template>
   <ul class="order-list">
     <OrderItem
-      @get-active-order="activeOrder => handleActiveItem(activeOrder)"
+      @get-active-order="activeOrder => handleActiveOrder(activeOrder)"
       v-for="order in orders"
       :key="order.id"
       :order="order"
