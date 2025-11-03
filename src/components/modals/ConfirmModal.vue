@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { onMounted, onUnmounted } from 'vue';
+  import noScroll from 'no-scroll';
   import type { IDeletionOrderData } from '@/components/views/orders-view/OrderItem.vue';
 
   defineProps<{
@@ -9,6 +11,9 @@
     close: [];
     delete: [id: number];
   }>();
+
+  onMounted(() => noScroll.on());
+  onUnmounted(() => noScroll.off());
 </script>
 
 <template>
