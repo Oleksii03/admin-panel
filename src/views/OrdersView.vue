@@ -42,7 +42,7 @@
 
   function deleteOrder(id: number) {
     orders.value = orders.value.filter(order => order.id !== id);
-    closeModalWindow();
+    setTimeout(() => closeModalWindow(), 200);
   }
 
   const closeModalWindow = () => (isBackdropVisible.value = false);
