@@ -1,11 +1,13 @@
 <script setup lang="ts">
   import { ref, onMounted, onUnmounted } from 'vue';
   import { useDateFormatter } from '@/composables/useDateFormatter';
+  import { useActiveSessions } from '@/composables/useActiveSessions';
 
   const { formatDateFull } = useDateFormatter();
 
   const currentDate = ref(new Date());
   const currentTime = ref('');
+  const { sessions } = useActiveSessions();
 
   let timeInterval: number | null = null;
 
@@ -38,13 +40,15 @@
 
 <template>
   <div class="date-info">
-    <p class="date-info__day">{{ getDayLabel() }}</p>
+    <div class="date-info__sessions">
+      <p class="date-info__day">{{ getDayLabel() }}:</p>
+      <p class="date-info__sessions-text">Active sessions: {{ sessions }}</p>
+    </div>
 
     <div class="date-info__date-box">
       <p class="date-info__date">{{ formatDateFull(currentDate) }}</p>
       <p class="date-info__time">
         <el-icon class="date-info__time-icon"><Clock /></el-icon>
-
         <span class="date-info__time-text">{{ currentTime }}</span>
       </p>
     </div>
@@ -57,11 +61,13 @@
   .date-info {
     font-size: 14px;
     margin-left: auto;
+    white-space: nowrap;
 
-    &__day {
-      &:not(:last-child) {
-        margin-bottom: 6px;
-      }
+    &__sessions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
     }
 
     &__date {
