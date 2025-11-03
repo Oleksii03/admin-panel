@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import NavigationMenu from '@/components/NavigationMenu/NavigationMenu.vue';
-  import TopMenu from '@/components/TopMenu/TopMenu.vue';
+  import NavigationMenu from '@/components/navigation-menu/NavigationMenu.vue';
+  import TopMenu from '@/components/top-menu/TopMenu.vue';
 </script>
 
 <template>
@@ -22,6 +22,7 @@
   }
 
   main {
+    position: relative;
     background-color: $blue;
     width: 100%;
   }

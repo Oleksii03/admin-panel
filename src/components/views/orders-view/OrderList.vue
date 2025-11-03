@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import OrderItem from '@/components/views/orders-view/OrderItem.vue';
   import type { Order } from '@/types';
+  import type { IDeletionOrderData } from '@/components/views/orders-view/OrderItem.vue';
   import { ref } from 'vue';
 
   defineProps<{
@@ -9,6 +10,7 @@
 
   const emit = defineEmits<{
     'get-active-order': [order: Order];
+    'get-deletion-order-data': [IDeletionOrderData];
   }>();
 
   const activeItemId = ref<number | null>(0);
@@ -23,6 +25,7 @@
   <ul class="order-list">
     <OrderItem
       @get-active-order="activeOrder => handleActiveOrder(activeOrder)"
+      @get-deletion-order-data="orderData => emit('get-deletion-order-data', orderData)"
       v-for="order in orders"
       :key="order.id"
       :order="order"

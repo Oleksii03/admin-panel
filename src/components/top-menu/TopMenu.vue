@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import TopLogo from '@/components/TopMenu/TopLogo.vue';
-  import TopSearch from '@/components/TopMenu/TopSearch.vue';
-  import DateInfo from '@/components/TopMenu/DateInfo.vue';
+  import TopLogo from '@/components/top-menu/TopLogo.vue';
+  import TopSearch from '@/components/top-menu/TopSearch.vue';
+  import DateInfo from '@/components/top-menu/DateInfo.vue';
 </script>
 
 <template>

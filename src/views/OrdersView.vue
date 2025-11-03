@@ -3,9 +3,12 @@
   import { useRootStore } from '@/stores/root';
   import { storeToRefs } from 'pinia';
   import type { Order, Product } from '@/types';
+  import type { IDeletionOrderData } from '@/components/views/orders-view/OrderItem.vue';
   import OrderList from '@/components/views/orders-view/OrderList.vue';
   import ProductsList from '@/components/views/orders-view/ProductsList.vue';
   import OrderListSkeleton from '@/components/views/orders-view/OrderListSkeleton.vue';
+  import BackdropView from '@/components/ui/BackdropView.vue';
+  import ConfirmModal from '@/components/modals/ConfirmModal.vue';
 
   const rootStore = useRootStore();
   const { orders, isLoading } = storeToRefs(rootStore);
@@ -13,8 +16,8 @@
   const activeProductsList = ref<Product[]>([]);
   const activeOrderTitle = ref('');
   const openProductList = ref(false);
-
-  provide('openProductList', openProductList);
+  const isBackdropVisible = ref(false);
+  const confirmModalData = ref<IDeletionOrderData | null>(null);
 
   function openActiveOrder(order: Order) {
     activeProductsList.value = order.products;
@@ -32,6 +35,20 @@
     activeProductsList.value = activeProductsList.value.filter(product => product.id !== id);
   }
 
+  function handleDeletionOrderData(orderData: IDeletionOrderData) {
+    confirmModalData.value = orderData;
+    isBackdropVisible.value = true;
+  }
+
+  function deleteOrder(id: number) {
+    orders.value = orders.value.filter(order => order.id !== id);
+    closeModalWindow();
+  }
+
+  const closeModalWindow = () => (isBackdropVisible.value = false);
+
+  provide('openProductList', openProductList);
+
   onMounted(async () => await rootStore.getOrders());
 </script>
 
@@ -47,6 +64,15 @@
         </h1>
       </div>
 
+      <BackdropView
+        @close="closeModalWindow"
+        :is-visible="isBackdropVisible">
+        <ConfirmModal
+          :order-data="confirmModalData"
+          @close="closeModalWindow"
+          @delete="deleteOrder" />
+      </BackdropView>
+
       <OrderListSkeleton v-if="isLoading" />
 
       <div
@@ -54,7 +80,8 @@
         :class="['orders__list-wrapper', { 'orders__list-wrapper_open': openProductList }]">
         <OrderList
           :orders="orders"
-          @get-active-order="openActiveOrder" />
+          @get-active-order="openActiveOrder"
+          @get-deletion-order-data="handleDeletionOrderData" />
 
         <ProductsList
           v-if="openProductList"

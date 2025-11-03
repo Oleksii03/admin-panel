@@ -4,6 +4,13 @@
   import { useDateFormatter } from '@/composables/useDateFormatter';
   import { useNumberFormatter } from '@/composables/useNumberFormatter';
 
+  export interface IDeletionOrderData {
+    orderId: number;
+    amount: number;
+    totalUSD: string;
+    totalUAH: string;
+  }
+
   const props = defineProps<{
     order: Order;
     isActiveOrder: boolean;
@@ -11,6 +18,7 @@
 
   defineEmits<{
     'get-active-order': [order: Order];
+    'get-deletion-order-data': [IDeletionOrderData];
   }>();
 
   const openProductList = inject<boolean>('openProductList');
@@ -78,7 +86,14 @@
 
     <button
       :class="['order-item__delete-btn', { 'order-item__delete-btn_hidden': openProductList }]"
-      @click.stop="console.log('test')">
+      @click.stop="
+        $emit('get-deletion-order-data', {
+          orderId: order.id,
+          amount: order.products?.length ?? 0,
+          totalUSD: orderTotalPrice.totalUSD,
+          totalUAH: orderTotalPrice.totalUAH,
+        })
+      ">
       <el-icon><DeleteFilled /></el-icon>
     </button>
   </li>
