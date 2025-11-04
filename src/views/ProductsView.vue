@@ -2,6 +2,8 @@
   import { onMounted } from 'vue';
   import { useRootStore } from '@/stores/root';
   import { storeToRefs } from 'pinia';
+  import ProductFilters from '@/components/views/products-view/ProductFilters.vue';
+  import ProductsList from '@/components/views/products-view/ProductsList.vue';
 
   const rootStore = useRootStore();
   const { products } = storeToRefs(rootStore);
@@ -12,14 +14,16 @@
 <template>
   <section class="products">
     <div class="products__container container">
-      <div class="products__title-box">
-        <el-icon><Plus /></el-icon>
-
+      <div class="products__header">
         <h1 class="products__title">
-          Товары /
+          Продукты /
           <span>{{ products.length }}</span>
         </h1>
+
+        <ProductFilters />
       </div>
+
+      <ProductsList :products="products" />
     </div>
   </section>
 </template>
@@ -36,22 +40,20 @@
       }
     }
 
-    &__title {
-      &-box {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 50px;
-      }
-    }
+    &__header {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      margin-bottom: 50px;
 
-    & .el-icon {
-      font-size: 14px;
-      color: $light;
-      background-color: $green;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
+      & .el-icon {
+        font-size: 14px;
+        color: $light;
+        background-color: $green;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+      }
     }
   }
 </style>
