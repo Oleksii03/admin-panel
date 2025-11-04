@@ -24,5 +24,7 @@
     display: grid;
     gap: 10px;
     overflow: auto;
+    max-height: calc(100dvh - 300px);
+    max-width: calc(100dvw - 300px);
   }
 </style>

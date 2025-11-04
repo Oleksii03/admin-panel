@@ -5,6 +5,7 @@
 
 <template>
   <TopMenu />
+
   <div class="wrapper">
     <NavigationMenu />
 
@@ -19,6 +20,7 @@
 
   .wrapper {
     display: flex;
+    height: calc(100dvh - 63px);
   }
 
   main {

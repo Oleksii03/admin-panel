@@ -15,7 +15,6 @@
     padding: 10px;
     width: 250px;
     box-shadow: 8px 0px 8px -4px $gray;
-    height: calc(100vh - 60px);
     background-color: $aside-bg-color;
   }
 </style>
