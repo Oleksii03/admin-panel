@@ -1,0 +1,35 @@
+previews:
+  generation: automatic
+
+services:
+  # WebSocket / Socket.io server (Node.js)
+  - type: web
+    name: admin-panel-ws
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: node server/socket-server.js
+
+  # Frontend (Vite/Vue) as Static Site
+  - type: web
+    name: admin-panel-frontend
+    runtime: static
+    plan: free
+    # Inject WS URL into Vite build using the ws service host
+    buildCommand: VITE_SOCKET_URL="https://${WS_HOST}.onrender.com" npm ci && npm run build-only
+    staticPublishPath: ./dist
+    envVars:
+      - key: WS_HOST
+        fromService:
+          name: admin-panel-ws
+          type: web
+          property: host
+    routes:
+      # Redirect root to the app base path
+      - type: redirect
+        source: /
+        destination: /admin-panel
+      # SPA fallback for history routes
+      - type: rewrite
+        source: /*
+        destination: /index.html
