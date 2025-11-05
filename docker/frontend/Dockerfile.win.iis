@@ -1,0 +1,39 @@
+# escape=`
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference='SilentlyContinue';"]
+
+# --- Build stage: Node.js on Windows Server Core ---
+FROM node:20-windowsservercore-ltsc2022 AS builder
+
+WORKDIR C:\app
+
+# Copy package manifests and install deps
+COPY package.json package-lock.json* ./
+RUN npm ci
+
+# Copy source
+COPY . .
+
+# Accept VITE_SOCKET_URL as build arg and write into .env.production
+ARG VITE_SOCKET_URL
+RUN if ($env:VITE_SOCKET_URL) { "VITE_SOCKET_URL=$env:VITE_SOCKET_URL" | Out-File -FilePath .env.production -Encoding ASCII }
+
+# Build production
+RUN npm run build
+
+
+# --- Runtime stage: IIS serving static files ---
+FROM mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2022
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference='SilentlyContinue';"]
+
+WORKDIR C:\inetpub\wwwroot
+
+# Ensure subpath for app that expects base '/admin-panel/'
+RUN New-Item -ItemType Directory -Path C:\inetpub\wwwroot\admin-panel -Force | Out-Null
+
+# Copy SPA rewrite config and built assets
+COPY docker/frontend/web.config C:\inetpub\wwwroot\web.config
+COPY --from=builder C:\app\dist C:\inetpub\wwwroot\admin-panel
+
+# IIS image exposes 80 by default via ServiceMonitor
+EXPOSE 80

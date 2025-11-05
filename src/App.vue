@@ -6,7 +6,10 @@
   <div>
     <MainLayout>
       <RouterView v-slot="{ Component }">
-        <Transition name="route-fade" mode="out-in" appear>
+        <Transition
+          name="route-fade"
+          mode="out-in"
+          appear>
           <KeepAlive>
             <component :is="Component" />
           </KeepAlive>

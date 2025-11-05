@@ -1,0 +1,18 @@
+# escape=`
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference='SilentlyContinue';"]
+
+FROM node:20-windowsservercore-ltsc2022
+
+WORKDIR C:\app
+
+# Install only production dependencies
+COPY package.json package-lock.json* ./
+RUN npm ci --omit=dev
+
+# Copy socket server
+COPY server\socket-server.js C:\app\server\socket-server.js
+
+ENV PORT=3001
+EXPOSE 3001
+
+CMD ["node", "server/socket-server.js"]
