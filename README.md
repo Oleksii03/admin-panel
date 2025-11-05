@@ -71,8 +71,8 @@ VITE_SOCKET_URL=https://your-socket-host.example.com
 ```
 
 Важно: GitHub Pages — это статический хостинг и не запускает ваш Node.js сервер. Для работы счётчика
-сессий на проде вам нужен внешний хостинг Socket.io с HTTPS/WSS (например Render, Railway, Fly.io,
-VPS). Сервер из `server/socket-server.js` можно развернуть там.
+сессий на проде вам нужен внешний хостинг Socket.io с HTTPS/WSS (VPS). Сервер из
+`server/socket-server.js` можно развернуть там.
 
 ## Деплой на GitHub Pages
 

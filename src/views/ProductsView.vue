@@ -8,7 +8,9 @@
   const rootStore = useRootStore();
   const { products } = storeToRefs(rootStore);
 
-  onMounted(async () => await rootStore.getProducts());
+  const getProductsByType = async (type: string) => await rootStore.getProducts(type);
+
+  onMounted(async () => await rootStore.getProducts(''));
 </script>
 
 <template>
@@ -20,7 +22,7 @@
           <span>{{ products.length }}</span>
         </h1>
 
-        <ProductFilters />
+        <ProductFilters @get-products-by-type="getProductsByType" />
       </div>
 
       <ProductsList :products="products" />

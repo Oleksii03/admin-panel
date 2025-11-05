@@ -1,18 +1,32 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
 
+  const emit = defineEmits<{
+    'get-products-by-type': [type: string];
+  }>();
+
   const type = ref('');
+
+  const getTypeProduct = () => emit('get-products-by-type', type.value);
 
   const options = [
     {
+      id: 1,
+      type: ' ',
+      label: 'All',
+    },
+    {
+      id: 2,
       type: 'Monitors',
       label: 'Monitors',
     },
     {
+      id: 3,
       type: 'Laptops',
       label: 'Laptops',
     },
     {
+      id: 4,
       type: 'Mobile-Phones',
       label: 'Mobile Phones',
     },
@@ -23,13 +37,13 @@
   <el-select
     v-model="type"
     filterable
-    popper-class="products-select-popper"
     placeholder="Тип:"
-    style="width: 240px">
+    style="width: 240px"
+    @change="getTypeProduct">
     <!--  -->
     <el-option
-      v-for="{ type, label } in options"
-      :key="type"
+      v-for="{ id, type, label } in options"
+      :key="id"
       :label="label"
       :value="type" />
   </el-select>
