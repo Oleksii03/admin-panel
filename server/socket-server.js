@@ -20,11 +20,11 @@
 // console.log(`[socket] server running on http://localhost:${PORT}`);
 
 import { Server } from 'socket.io';
-import http from 'http';
+import { createServer } from 'node:http';
 
 const PORT = process.env.PORT || 3001;
 
-const server = http.createServer();
+const server = createServer();
 const io = new Server(server, {
   cors: {
     origin: '*',
