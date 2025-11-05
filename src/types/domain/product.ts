@@ -1,4 +1,4 @@
-import type { Flag01 } from './common';
+import type { Flag01 } from '../common/common';
 import type { Guarantee } from './guarantee';
 import type { Price } from './price';
 

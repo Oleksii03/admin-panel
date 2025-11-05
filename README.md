@@ -3,14 +3,9 @@
 Админ-панель с роутингом, глобальным состоянием (Pinia), компонентным подходом и счётчиком активных
 сессий через WebSocket (Socket.io). Проект готов для деплоя на GitHub Pages.
 
-## Требования
-
-- Node.js >= 18
-- npm >= 9
-
 ## Установка
 
-```bash
+```
 npm install
 ```
 
@@ -18,13 +13,8 @@ npm install
 
 - `npm run dev` — параллельный запуск фронта и сокет-сервера (удобно для разработки)
 - `npm start` — только фронтенд (Vite dev server)
-- `npm run dev:client` — только фронтенд (альтернатива `npm start`)
 - `npm run dev:socket` — только Socket.io сервер (`server/socket-server.js`)
 - `npm run build` — сборка прод-версии (с проверкой типов) в `dist`
-- `npm run preview` — локальный предпросмотр собранной `dist`
-- `npm run type-check` — проверка типов через `vue-tsc`
-- `npm run lint` — ESLint с автофиксами
-- `npm run format` — форматирование кода Prettier
 - `npm run deploy` — деплой собранной `dist` на GitHub Pages (ветка `gh-pages`)
 
 ## Источники данных
@@ -37,7 +27,7 @@ npm install
 
 Вариант A (рекомендовано):
 
-```bash
+```
 npm run dev
 ```
 
@@ -46,7 +36,7 @@ npm run dev
 
 Вариант B (раздельно):
 
-```bash
+```
 # Терминал 1 — фронт
 npm start
 
@@ -80,8 +70,7 @@ VITE_SOCKET_URL=https://your-socket-host.example.com
 
 Быстрый способ:
 
-```bash
-npm run build
+```
 npm run deploy
 ```
 
