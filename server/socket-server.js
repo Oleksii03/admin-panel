@@ -24,12 +24,22 @@ import { createServer } from 'node:http';
 
 const PORT = process.env.PORT || 3001;
 
-const server = createServer();
+const server = createServer((req, res) => {
+  if (req.url === '/') {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    res.end('OK');
+    return;
+  }
+  res.statusCode = 404;
+  res.end('Not Found');
+});
 const io = new Server(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
   },
+  path: '/socket.io',
 });
 
 io.on('connection', socket => {
@@ -41,5 +51,5 @@ io.on('connection', socket => {
 });
 
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`[socket] server running on port ${PORT}`);
+  console.log(`[socket] server listening on 0.0.0.0:${PORT}`);
 });

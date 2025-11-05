@@ -9,6 +9,7 @@ services:
     plan: free
     buildCommand: npm ci
     startCommand: node server/socket-server.js
+    healthCheckPath: /
 
   # Frontend (Vite/Vue) as Static Site
   - type: web
@@ -24,4 +25,3 @@ services:
           name: admin-panel-ws
           type: web
           property: host
-    # Hash routing не потребує серверних редіректів або переписувань маршрутів
