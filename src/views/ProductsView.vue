@@ -10,6 +10,10 @@
 
   const getProductsByType = async (type: string) => await rootStore.getProducts(type);
 
+  function deleteProduct(id: number) {
+    products.value = products.value.filter(p => p.id !== id);
+  }
+
   onMounted(async () => await rootStore.getProducts(''));
 </script>
 
@@ -25,7 +29,9 @@
         <ProductFilters @get-products-by-type="getProductsByType" />
       </div>
 
-      <ProductsList :products="products" />
+      <ProductsList
+        :products="products"
+        @delete-product="deleteProduct" />
     </div>
   </section>
 </template>

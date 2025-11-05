@@ -7,7 +7,6 @@ import type { Order, Product } from '@/types';
 export const useRootStore = defineStore('root', () => {
   const orders = ref<Order[]>([]);
   const products = ref<Product[]>([]);
-  // const product = ref<Product[]>([]);
   const isLoading = ref(false);
 
   async function getOrders() {
@@ -23,29 +22,12 @@ export const useRootStore = defineStore('root', () => {
     }
   }
 
-  // async function getProducts() {
-  //   isLoading.value = true;
-
-  //   try {
-  //     const { data } = await axios.get(PRODUCTS_URL);
-  //     products.value = data;
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
-  // }
-
   async function getProducts(type: string) {
-    isLoading.value = true;
-
     try {
       const { data } = await axios.get(`${PRODUCTS_URL}?type=${type ? type : ''}`);
       products.value = data;
     } catch (error) {
       console.log(error);
-    } finally {
-      isLoading.value = false;
     }
   }
 

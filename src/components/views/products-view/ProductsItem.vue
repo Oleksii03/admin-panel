@@ -87,6 +87,7 @@
 
     <button
       class="products-item__delete-btn"
+      type="button"
       @click.stop="$emit('delete-product', product.id)">
       <el-icon><DeleteFilled /></el-icon>
     </button>
