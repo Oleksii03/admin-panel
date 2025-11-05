@@ -24,12 +24,4 @@ services:
           name: admin-panel-ws
           type: web
           property: host
-    routes:
-      # Redirect root to the app base path
-      - type: redirect
-        source: /
-        destination: /admin-panel
-      # SPA fallback for history routes
-      - type: rewrite
-        source: /*
-        destination: /index.html
+    # Hash routing не потребує серверних редіректів або переписувань маршрутів
