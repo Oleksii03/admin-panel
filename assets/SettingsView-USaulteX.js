@@ -1,0 +1,1 @@
+import{_ as t,a as s,e as n,o}from"./index-CkGP1ONc.js";const a={},c={class:"container settings"};function r(_,e){return o(),s("div",c,[...e[0]||(e[0]=[n("h1",null,"Settings",-1)])])}const d=t(a,[["render",r],["__scopeId","data-v-04ff04df"]]);export{d as default};
