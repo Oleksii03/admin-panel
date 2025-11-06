@@ -1,0 +1,12 @@
+:4174 {
+    # Route Socket.io traffic to local socket server
+    @socket path /socket.io*
+    handle @socket {
+        reverse_proxy localhost:3001
+    }
+
+    # All other requests go to the static preview server
+    handle {
+        reverse_proxy localhost:4173
+    }
+}

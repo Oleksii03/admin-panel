@@ -13,13 +13,14 @@ services:
       - key: NODE_VERSION
         value: 20
 
-  # Frontend (Vite/Vue) as Static Site
   - type: web
     name: admin-panel-frontend
     runtime: static
     plan: free
-    # Inject WS URL into Vite build using the ws service host
-    buildCommand: VITE_SOCKET_URL=https://${WS_HOST} npm install --no-audit --progress=false && npm run build-only
+
+    buildCommand:
+      VITE_SOCKET_URL=https://${WS_HOST} npm install --no-audit --progress=false && npm run
+      build-only
     staticPublishPath: ./dist
     envVars:
       - key: WS_HOST
