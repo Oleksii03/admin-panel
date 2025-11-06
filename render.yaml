@@ -2,7 +2,6 @@ previews:
   generation: automatic
 
 services:
-  # WebSocket / Socket.io server (Node.js)
   - type: web
     name: admin-panel-ws
     runtime: node
