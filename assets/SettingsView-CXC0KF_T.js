@@ -1,1 +1,0 @@
-import{_ as t,a as n,e as s,o}from"./index-DkQxIClq.js";const r={};function a(c,e){return o(),n("div",null,[...e[0]||(e[0]=[s("h1",null,"Settings",-1)])])}const i=t(r,[["render",a]]);export{i as default};
