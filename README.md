@@ -76,27 +76,3 @@ npm run deploy
 
 Команда `deploy` публикует содержимое `dist` в ветку `gh-pages` через пакет `gh-pages`. После пуша
 включите GitHub Pages в настройках репозитория и укажите источник — `gh-pages` (корень).
-## Deployment to Railway
-
-This project can be deployed on Railway as two services from the same repo:
-
-- Frontend (Vite static build)
-- Socket.io server (`server/socket-server.js`)
-
-Steps:
-
-1. Create a new Railway project and add the repo.
-2. Frontend service:
-   - Build Command: `npm ci && npm run build`
-   - Start Command: `npm run start:prod` (added script runs `vite preview --host --port $PORT`)
-   - Variables: set `VITE_SOCKET_URL` to the public URL of the Socket service, e.g. `https://<socket>.up.railway.app`
-3. Socket service:
-   - Build Command: `npm ci`
-   - Start Command: `node server/socket-server.js`
-   - Variables (optional but recommended): `CORS_ORIGIN=https://<frontend>.up.railway.app`
-
-Notes:
-
-- `vite.config.ts` uses `base: '/'` which is correct for Railway.
-- The socket server listens on `process.env.PORT` and `0.0.0.0`, which suits Railway.
-- `VITE_SOCKET_URL` is consumed at build time by Vite; if you change it, rebuild the frontend.
