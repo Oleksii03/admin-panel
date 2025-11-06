@@ -6,7 +6,7 @@ export function useActiveSessions() {
   let socket: Socket | null = null;
 
   const connect = () => {
-    const url = import.meta.env.VITE_SOCKET_URL ?? 'http://localhost:3001';
+    const url = import.meta.env.VITE_SOCKET_URL ?? window.location.origin;
     socket = io(url, {
       transports: ['polling', 'websocket'],
       path: '/socket.io',

@@ -10,6 +10,9 @@ services:
     buildCommand: npm ci
     startCommand: node server/socket-server.js
     healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: 20
 
   # Frontend (Vite/Vue) as Static Site
   - type: web
@@ -17,7 +20,7 @@ services:
     runtime: static
     plan: free
     # Inject WS URL into Vite build using the ws service host
-    buildCommand: VITE_SOCKET_URL="https://${WS_HOST}.onrender.com" npm ci && npm run build-only
+    buildCommand: VITE_SOCKET_URL="https://${WS_HOST}" npm ci && npm run build-only
     staticPublishPath: ./dist
     envVars:
       - key: WS_HOST
