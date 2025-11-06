@@ -15,7 +15,7 @@ const server = createServer((req, res) => {
 });
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: process.env.CORS_ORIGIN || '*',
     methods: ['GET', 'POST'],
   },
   path: '/socket.io',

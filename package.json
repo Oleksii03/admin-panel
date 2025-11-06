@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "vite",
+    "start:prod": "vite preview --host --port $PORT",
     "dev": "run-p dev:client dev:socket",
     "dev:client": "vite",
     "dev:socket": "node server/socket-server.js",
